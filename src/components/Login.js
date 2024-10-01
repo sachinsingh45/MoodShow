@@ -45,7 +45,6 @@ const Login = () => {
         .then(() => {
           const { uid, email, displayName, photoURL } = user;
           dispatch(addUser({ uid, email, displayName, photoURL }));
-          navigate("/browse");
         })
         .catch((error) => {
           console.error("Error updating profile:", error);
@@ -65,8 +64,6 @@ const Login = () => {
         .then((userCredential) => {
           // Signed in
           const user = userCredential.user;
-          console.log(user);
-          navigate("/browse");
         })
         .catch((error) => {
           const errorCode = error.code;

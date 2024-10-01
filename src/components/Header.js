@@ -3,20 +3,34 @@ import { auth } from '../utils/firebase';
 import { signOut } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-
+import { useDispatch } from 'react-redux';
+import { useEffect } from "react";
+import { onAuthStateChanged } from "firebase/auth";
+import { addUser, removeUser } from "../utils/userSlice.js";
 const Header = () => {
   const navigate = useNavigate();
+  const dispatch =useDispatch();
   const user = useSelector(store => store.user);
   const handleSignOut = () => {
     signOut(auth)
-      .then(() => {
-        navigate('/');
-      })
+      .then(() => {})
       .catch(() => {
         navigate('/error');
       });
   };
-
+  useEffect(() =>{
+    onAuthStateChanged(auth,(user) =>{
+        if(user){
+            const {uid,email, displayName,photoURL} = user;
+            dispatch(addUser({uid: uid, email: email,displayName: displayName, photoURL: photoURL }));
+            navigate("/browse");
+        }
+        else{
+            dispatch(removeUser());
+            navigate("/");
+        }
+    });
+  },[])
   return (
     <div className="bg-gradient-to-b from-black/80 to-transparent absolute w-full top-0 flex items-center justify-between px-10 py-4 shadow-lg z-50">
       {/* Logo Section */}
