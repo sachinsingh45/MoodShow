@@ -1,17 +1,25 @@
 import React, { useRef, useState } from 'react';
 import Header from './Header';
 import { checkValidity } from '../utils/Validate';
+import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth';
+import { auth, updateProfile } from '../utils/firebase';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { addUser } from '../utils/userSlice';
 
 const Login = () => {
-  // State to track whether it's Sign In or Sign Up mode
   const [isSignUp, setIsSignUp] = useState(false);
-  
-  // State to track error message
   const [errorMessage, setErrorMessage] = useState('');
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  // Toggle between Sign In and Sign Up
+  const name = useRef(null);
+  const email = useRef(null);
+  const password = useRef(null);
+
   const toggleAuthMode = () => {
-    setIsSignUp(!isSignUp);
+    setIsSignUp((prevMode) => !prevMode);
+    setErrorMessage(''); // Clear error message on mode switch
   };
 
   const handleButtonClick = () => {
@@ -21,15 +29,52 @@ const Login = () => {
     if (message) {
       // Set error message if validation fails
       setErrorMessage(message);
+      return; // Return early if there is a validation error
+    }
+
+    // Sign-in or sign-up
+    if (isSignUp) {
+      // Sign Up Logic
+      createUserWithEmailAndPassword(auth, email.current.value, password.current.value)
+      .then((userCredential) => {
+        const user = userCredential.user;
+        updateProfile(user, {
+          displayName: name?.current?.value,
+          photoURL: "https://avatars.githubusercontent.com/u/177448507?v=4",
+        })
+        .then(() => {
+          const { uid, email, displayName, photoURL } = user;
+          dispatch(addUser({ uid, email, displayName, photoURL }));
+          navigate("/browse");
+        })
+        .catch((error) => {
+          console.error("Error updating profile:", error);
+          setErrorMessage(error.message);
+        });
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.error("Error creating user:", error);
+        setErrorMessage(`${errorCode}: ${errorMessage}`);
+      });
+
     } else {
-      // Clear error message if valid
-      setErrorMessage('');
-      console.log("Form submitted successfully");
+      // Sign In Logic
+      signInWithEmailAndPassword(auth, email.current.value, password.current.value)
+        .then((userCredential) => {
+          // Signed in
+          const user = userCredential.user;
+          console.log(user);
+          navigate("/browse");
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          setErrorMessage(`${errorCode}: ${errorMessage}`);
+        });
     }
   };
-
-  const email = useRef(null);
-  const password = useRef(null);
 
   return (
     <div className="relative h-screen w-full bg-cover bg-center" style={{ backgroundImage: "url('bg.jpg')" }}>
@@ -37,14 +82,9 @@ const Login = () => {
       <Header />
       <div className="absolute inset-0 flex items-center justify-center">
         <div className="bg-black bg-opacity-50 p-8 mt-10 rounded-lg max-w-md w-full text-white backdrop-blur">
-          {/* Dynamic Title */}
-          <h2 className="text-3xl font-bold mb-6">
-            {isSignUp ? 'Sign Up' : 'Sign In'}
-          </h2>
+          <h2 className="text-3xl font-bold mb-6">{isSignUp ? 'Sign Up' : 'Sign In'}</h2>
 
-          {/* Form */}
           <form onSubmit={(e) => e.preventDefault()}>
-            {/* Email Input */}
             <div className="mb-4">
               <input
                 ref={email}
@@ -54,7 +94,6 @@ const Login = () => {
               />
             </div>
 
-            {/* Password Input */}
             <div className="mb-4">
               <input
                 ref={password}
@@ -64,7 +103,6 @@ const Login = () => {
               />
             </div>
 
-            {/* Conditional Inputs for Sign Up */}
             {isSignUp && (
               <div>
                 <div className="mb-4">
@@ -84,14 +122,12 @@ const Login = () => {
               </div>
             )}
 
-            {/* Error Message */}
             {errorMessage && (
               <div className="mb-4 text-red-500 font-semibold">
                 {errorMessage}
               </div>
             )}
 
-            {/* Submit Button */}
             <button
               type="submit"
               className="w-full bg-red-600 hover:bg-red-700 text-white py-3 rounded-lg font-semibold"
@@ -100,23 +136,18 @@ const Login = () => {
             </button>
           </form>
 
-          {/* Sign In/Sign Up Switch */}
           <div className="mt-8">
             {isSignUp ? (
               <p className="text-gray-400">
                 Already have an account?{' '}
-                <button
-                  onClick={toggleAuthMode}
-                  className="text-white hover:underline">
+                <button onClick={toggleAuthMode} className="text-white hover:underline">
                   Sign In
                 </button>.
               </p>
             ) : (
               <p className="text-gray-400">
                 New to MoodShow?{' '}
-                <button
-                  onClick={toggleAuthMode}
-                  className="text-white hover:underline">
+                <button onClick={toggleAuthMode} className="text-white hover:underline">
                   Sign Up now
                 </button>.
               </p>
