@@ -2,7 +2,7 @@ import React from 'react';
 
 const VideoTitle = ({ title, overview }) => {
   return (
-    <div className="absolute inset-0 flex flex-col p-8 pt-32 bg-transparent">
+    <div className="absolute inset-0 flex flex-col p-8 pt-[calc(50vh-12rem)] bg-transparent">
       <div className=" text-white p-8 rounded-lg  transition-shadow duration-300 ease-in-out max-w-lg w-full">
         <h1 className="text-4xl font-bold mb-4 text-yellow-400 hover:text-yellow-300 transition-colors duration-200 ease-in-out font-montserrat">
           {title}

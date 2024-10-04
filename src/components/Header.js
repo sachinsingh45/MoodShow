@@ -33,7 +33,7 @@ const Header = () => {
     return () => unsubscribe();
   },[])
   return (
-    <div className="bg-gradient-to-b from-black  absolute w-full top-0 flex items-center justify-between px-10 py-4  z-50">
+    <div className="bg-gradient-to-b from-black absolute w-full top-0 flex items-center justify-between px-10 py-4  z-50">
       <img
         src= "logo.png"
         alt="logo"
