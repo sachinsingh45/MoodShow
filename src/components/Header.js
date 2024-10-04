@@ -41,6 +41,17 @@ const Header = () => {
       />
       {user && (
         <div className="flex items-center space-x-4 p-2">
+          <button className="relative px-4 py-2 font-bold text-white rounded-md transition-all duration-300 hover:shadow-lg hover:-translate-y-1 bg-gradient-to-r from-purple-800 to-red-600 bg-[length:200%_200%] animate-gradientMove">
+            <div className="flex items-center space-x-2">
+              <img
+                src="gpt-icon.webp" 
+                alt="GPT Icon"
+                className="w-5 h-5"
+              />
+              <span>My Mood</span>
+            </div>
+          </button>
+
         <img
           src= {user?.photoURL}
           alt="User Icon"
