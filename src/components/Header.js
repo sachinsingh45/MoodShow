@@ -19,7 +19,7 @@ const Header = () => {
       });
   };
   useEffect(() =>{
-    onAuthStateChanged(auth,(user) =>{
+    const unsubscribe = onAuthStateChanged(auth,(user) =>{
         if(user){
             const {uid,email, displayName,photoURL} = user;
             dispatch(addUser({uid: uid, email: email,displayName: displayName, photoURL: photoURL }));
@@ -30,21 +30,17 @@ const Header = () => {
             navigate("/");
         }
     });
+    return () => unsubscribe();
   },[])
   return (
-    <div className="bg-gradient-to-b from-black/80 to-transparent absolute w-full top-0 flex items-center justify-between px-10 py-4 shadow-lg z-50">
-      {/* Logo Section */}
+    <div className="bg-gradient-to-b from-black  absolute w-full top-0 flex items-center justify-between px-10 py-4  z-50">
       <img
-        src="logo.png"
+        src= "logo.png"
         alt="logo"
         className="w-40 h-auto p-2 rounded-lg object-contain transition-transform duration-300 hover:scale-105"
       />
-
-      {/* User Profile & Sign Out Section */}
-      
       {user && (
         <div className="flex items-center space-x-4 p-2">
-        {/* http://pluspng.com/img-png/user-png-icon-young-user-icon-2400.png */}
         <img
           src= {user?.photoURL}
           alt="User Icon"

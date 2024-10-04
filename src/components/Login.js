@@ -6,6 +6,7 @@ import { auth, updateProfile } from '../utils/firebase';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { addUser } from '../utils/userSlice';
+import { USER_AVATAR } from '../utils/constants';
 
 const Login = () => {
   const [isSignUp, setIsSignUp] = useState(false);
@@ -40,7 +41,7 @@ const Login = () => {
         const user = userCredential.user;
         updateProfile(user, {
           displayName: name?.current?.value,
-          photoURL: "https://avatars.githubusercontent.com/u/177448507?v=4",
+          photoURL: USER_AVATAR,
         })
         .then(() => {
           const { uid, email, displayName, photoURL } = user;
@@ -74,10 +75,10 @@ const Login = () => {
   };
 
   return (
-    <div className="relative h-screen w-full bg-cover bg-center" style={{ backgroundImage: "url('bg.jpg')" }}>
+    <div className="z-50relative h-screen w-full bg-cover bg-center " style={{ backgroundImage: "url('bg.jpg')" }}>
       <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black opacity-75"></div>
       <Header />
-      <div className="absolute inset-0 flex items-center justify-center">
+      <div className="z-0 absolute inset-0 flex items-center justify-center">
         <div className="bg-black bg-opacity-50 p-8 mt-10 rounded-lg max-w-md w-full text-white backdrop-blur">
           <h2 className="text-3xl font-bold mb-6">{isSignUp ? 'Sign Up' : 'Sign In'}</h2>
 
@@ -111,6 +112,7 @@ const Login = () => {
                 </div>
                 <div className="mb-4">
                   <input
+                    ref={name}
                     type="text"
                     placeholder="Full Name"
                     className="w-full p-3 rounded-lg bg-gray-700 border-none text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-500"
