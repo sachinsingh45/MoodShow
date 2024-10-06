@@ -17,7 +17,7 @@ const MovieDetail = () => {
     
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-900 text-white p-4 lg:p-6">
       {/* Trailer and Title/Overview Section */}
-      <div className="flex flex-col lg:flex-row items-start w-full max-w-6xl mb-12">
+      <div className="flex flex-col pt-12  lg:flex-row items-start w-full max-w-6xl mb-12">
         
         {/* Movie Trailer */}
         <div className="w-full lg:w-2/3 h-auto lg:h-auto relative mb-8 lg:mb-0">

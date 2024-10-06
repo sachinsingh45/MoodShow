@@ -1,8 +1,8 @@
-import axios from "axios";
-import { useRef, useState } from "react"; // Import useState
+import React, { useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import axios from "axios";
 import lang from "../utils/languageConstants";
-import { API_OPTIONS} from "../utils/constants";
+import { API_OPTIONS } from "../utils/constants";
 import { addGPTMovieResult } from "../utils/gptSlice";
 
 const GptSearchBar = () => {
@@ -35,7 +35,7 @@ const GptSearchBar = () => {
     }
 
     console.log("User Query:", userQuery);
-    
+
     // Set loading to true
     setLoading(true);
 
@@ -85,24 +85,32 @@ const GptSearchBar = () => {
   return (
     <div className="pt-[35%] md:pt-[10%] flex justify-center">
       <div className="w-full md:w-2/3 lg:w-1/2 bg-gradient-to-br from-gray-800/70 to-gray-900 border-2 border-yellow-400 rounded-lg shadow-2xl p-8 space-y-6 transition duration-300 hover:shadow-yellow-500/30">
-        <h1 className="text-white text-l sm:text-2xl md:text-3xl font-bold mb-4 text-center">
-          {lang[langKey].greeting}! 👋 {userName} ✨
-        </h1>
-        <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
-          <input
-            ref={searchText}
-            type="text"
-            className="w-full p-4 rounded-lg border-2 border-gray-600 bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:border-red-600 focus:ring-2 focus:ring-red-700 transition duration-300 shadow-md hover:shadow-lg"
-            placeholder={lang[langKey].gptSearchPlaceholder}
-          />
-          <button
-            className="w-full px-4 md:text-lg text-sm md:px-1 py-3 bg-gradient-to-r from-red-500 to-yellow-500 text-white rounded-lg font-semibold text-lg shadow-md hover:shadow-lg hover:from-red-600 hover:to-yellow-600 transition duration-300 transform hover:scale-105 active:scale-95 flex justify-center items-center"
-            onClick={handleGptSearchClick}
-          >
-            <i className="fas fa-robot mr-2"></i>
-            {loading ? lang[langKey].onSearching : lang[langKey].search}
-          </button>
-        </form>
+        {userName ? ( // Check if userName exists
+          <>
+            <h1 className="text-white text-l sm:text-2xl md:text-3xl font-bold mb-4 text-center">
+              {lang[langKey].greeting}! 👋 {userName} ✨
+            </h1>
+            <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
+              <input
+                ref={searchText}
+                type="text"
+                className="w-full p-4 rounded-lg border-2 border-gray-600 bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:border-red-600 focus:ring-2 focus:ring-red-700 transition duration-300 shadow-md hover:shadow-lg"
+                placeholder={lang[langKey].gptSearchPlaceholder}
+              />
+              <button
+                className="w-full px-4 md:text-lg text-sm md:px-1 py-3 bg-gradient-to-r from-red-500 to-yellow-500 text-white rounded-lg font-semibold text-lg shadow-md hover:shadow-lg hover:from-red-600 hover:to-yellow-600 transition duration-300 transform hover:scale-105 active:scale-95 flex justify-center items-center"
+                onClick={handleGptSearchClick}
+              >
+                <i className="fas fa-robot mr-2"></i>
+                {loading ? lang[langKey].onSearching : lang[langKey].search}
+              </button>
+            </form>
+          </>
+        ) : (
+          <h1 className="text-white text-l sm:text-2xl md:text-3xl font-bold mb-4 text-center">
+            Please log in to use the search functionality.
+          </h1>
+        )}
       </div>
     </div>
   );

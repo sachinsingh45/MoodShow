@@ -13,6 +13,7 @@ import useRomanticMovies from '../hooks/useRomanticMovies';
 import GPTSearch from './GPTSearch';
 import { useSelector } from 'react-redux';
 import Footer from './Footer';
+import ScrollToTop from './ScrollToTop';
 const Browse = () => {
   useNowPlayingMovies();
   useUpcomingMovies();
@@ -24,6 +25,7 @@ const Browse = () => {
   const showGPTSearch = useSelector(store => store.gpt.showGPTSearch);
   return (
     <div>
+      <ScrollToTop/>
       <Header />
       {showGPTSearch ? (
         <GPTSearch/>
