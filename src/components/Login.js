@@ -11,6 +11,7 @@ import { FaGoogle } from 'react-icons/fa';
 import 'react-toastify/dist/ReactToastify.css';
 import Footer from './Footer';
 import md5 from 'md5';
+import { USER_AVATAR } from '../utils/constants';
 
 const Login = () => {
   const [isSignUp, setIsSignUp] = useState(false);
@@ -43,7 +44,7 @@ const Login = () => {
         .then((userCredential) => {
           const user = userCredential.user;
           const emailHash = md5(user.email.trim().toLowerCase());
-          const photoURL = `https://www.gravatar.com/avatar/${emailHash}?d=identicon`;
+          const photoURL = USER_AVATAR;
           updateProfile(user, {
             displayName: name.current.value,
             photoURL,
