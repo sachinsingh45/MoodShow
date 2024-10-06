@@ -15,9 +15,11 @@ const useMovieVideos = (movieID) => {
                 setTrailerID(trailer.key);
             } else {
                 console.error('No trailers found or no results for this movie.');
+                setTrailerID(null); // Set to null if no trailer found
             }
         } catch (error) {
             console.error('Error fetching the movie trailer:', error);
+            setTrailerID(null); // Set to null in case of error
         }
     };
 
@@ -27,7 +29,7 @@ const useMovieVideos = (movieID) => {
         }
     }, [movieID]);
 
-    return trailerID;
+    return trailerID; // Ensure to return the trailerID directly
 };
 
 export default useMovieVideos;

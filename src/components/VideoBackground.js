@@ -11,7 +11,7 @@ const VideoBackground = ({ movieID, children }) => {
                 <iframe
                     src={`https://www.youtube.com/embed/${trailerID}?autoplay=1&mute=1&loop=1&controls=0&playlist=${trailerID}`} // Looping video and hiding controls
                     title="YouTube video player"
-                    className="absolute inset-0 w-full h-full object-cover scale-150"
+                    className=" absolute inset-0 w-full h-full object-cover scale-[calc(4)] sm:scale-150 "
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                     referrerPolicy="strict-origin-when-cross-origin"
                 ></iframe>
@@ -21,9 +21,9 @@ const VideoBackground = ({ movieID, children }) => {
 
             <div className="absolute inset-0">
                 {/* Horizontal Gradient */}
-                <div className="absolute inset-0 bg-gradient-to-r from-black to-transparent"></div>
+                <div className="absolute inset-0 bg-gradient-to-r from-black sm:via-transparent to-transparent"></div>
                 {/* Vertical Gradient */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
+                <div className="absolute inset-0 bg-gradient-to-t from-black sm:via-transparent to-transparent"></div>
             </div>
 
             {/* Children components (title, overview, etc.) */}

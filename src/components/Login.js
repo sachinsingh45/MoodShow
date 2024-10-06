@@ -3,7 +3,6 @@ import Header from './Header';
 import { checkValidity } from '../utils/Validate';
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth, updateProfile } from '../utils/firebase';
-import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { addUser } from '../utils/userSlice';
 import { USER_AVATAR } from '../utils/constants';
@@ -11,7 +10,6 @@ import { USER_AVATAR } from '../utils/constants';
 const Login = () => {
   const [isSignUp, setIsSignUp] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
-  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const name = useRef(null);
@@ -75,7 +73,7 @@ const Login = () => {
   };
 
   return (
-    <div className="z-50relative h-screen w-full bg-cover bg-center " style={{ backgroundImage: "url('bg.jpg')" }}>
+    <div className="z-50 relative h-screen w-full bg-cover bg-center bg-fixed" style={{ backgroundImage: "url('bg.jpg')" }}>
       <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black opacity-75"></div>
       <Header />
       <div className="z-0 absolute inset-0 flex items-center justify-center">

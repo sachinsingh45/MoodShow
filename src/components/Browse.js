@@ -12,6 +12,7 @@ import useHorrorMovies from '../hooks/useHorrorMovies';
 import useRomanticMovies from '../hooks/useRomanticMovies';
 import GPTSearch from './GPTSearch';
 import { useSelector } from 'react-redux';
+import Footer from './Footer';
 const Browse = () => {
   useNowPlayingMovies();
   useUpcomingMovies();
@@ -32,6 +33,7 @@ const Browse = () => {
           <SecondaryContainer/>
         </div>
       )}
+      <Footer/>
     </div>
   );
 }

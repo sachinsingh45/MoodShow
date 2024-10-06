@@ -9,7 +9,7 @@ const movieSlice = createSlice({
         upComingMovies: null,
         scifiMovies: null,
         horrorMovies: null,
-        romanticMovies: null, // Add this line
+        romanticMovies: null, 
     },
     reducers: {
         addNowPlayingMovies: (state, action) => {
@@ -43,7 +43,7 @@ export const {
     addUpcomingMovies, 
     addSciFiMovies,
     addHorrorMovies,
-    addRomanticMovies 
+    addRomanticMovies,
 } = movieSlice.actions;
 
 export default movieSlice.reducer;

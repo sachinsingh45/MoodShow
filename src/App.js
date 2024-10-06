@@ -1,4 +1,5 @@
 import { Provider } from 'react-redux';
+import '@fortawesome/fontawesome-free/css/all.min.css';
 import Body from './components/Body';
 import appStore from './utils/appStore';
 

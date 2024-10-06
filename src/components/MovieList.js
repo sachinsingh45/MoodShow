@@ -1,5 +1,6 @@
 import MovieCard from "./MovieCard";
 import './../../src/styles.css';
+
 const MovieList = ({ title, movies }) => {
   return (
     <div className="px-6">
@@ -11,6 +12,9 @@ const MovieList = ({ title, movies }) => {
               key={movie.id} 
               posterPath={movie.poster_path} 
               title={movie.title} 
+              language={movie.original_language}  
+              rating={movie.vote_average} 
+              id = {movie.id}        
             />
           ))}
         </div>

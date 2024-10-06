@@ -1,87 +1,111 @@
-import openai from "../utils/openai";
-import { useRef } from "react";
+import axios from "axios";
+import { useRef, useState } from "react"; // Import useState
 import { useDispatch, useSelector } from "react-redux";
 import lang from "../utils/languageConstants";
-import { API_OPTIONS } from "../utils/constants";
+import { API_OPTIONS} from "../utils/constants";
 import { addGPTMovieResult } from "../utils/gptSlice";
 
 const GptSearchBar = () => {
   const dispatch = useDispatch();
   const langKey = useSelector((store) => store.config.lang);
+  const userName = useSelector((store) => store.user.displayName);
   const searchText = useRef(null);
+  const API_KEY = process.env.REACT_APP_API_KEY;
+  const [loading, setLoading] = useState(false);
 
-  // search movie in TMDB
   const searchMovieTMDB = async (movie) => {
-    const data = await fetch(
-      "https://api.themoviedb.org/3/search/movie?query=" +
-        movie +
-        "&include_adult=false&language=en-US&page=1",
-      API_OPTIONS
-    );
-    const json = await data.json();
-
-    return json.results;
+    try {
+      const response = await fetch(
+        `https://api.themoviedb.org/3/search/movie?query=${movie}&include_adult=false&language=en-US&page=1`,
+        API_OPTIONS
+      );
+      const json = await response.json();
+      return json.results;
+    } catch (error) {
+      console.error("Error fetching movie data from TMDB:", error);
+      return [];
+    }
   };
 
   const handleGptSearchClick = async () => {
-    console.log(searchText.current.value);
-    // Make an API call to GPT API and get Movie Results
-
-    const gptQuery =
-      "Act as a Movie Recommendation system and suggest some movies for the query : " +
-      searchText.current.value +
-      ". only give me names of 5 movies, comma seperated like the example result given ahead. Example Result: Gadar, Sholay, Don, Golmaal, Koi Mil Gaya";
-
-    const gptResults = await openai.chat.completions.create({
-      messages: [{ role: "user", content: gptQuery }],
-      model: "gpt-3.5-turbo",
-    });
-
-    if (!gptResults.choices) {
-      // TODO: Write Error Handling
+    const userQuery = searchText.current.value.trim();
+    if (!userQuery) {
+      console.error("Search query cannot be empty.");
+      return;
     }
 
-    console.log(gptResults.choices?.[0]?.message?.content);
+    console.log("User Query:", userQuery);
+    
+    // Set loading to true
+    setLoading(true);
 
-    // Andaz Apna Apna, Hera Pheri, Chupke Chupke, Jaane Bhi Do Yaaro, Padosan
-    const gptMovies = gptResults.choices?.[0]?.message?.content.split(",");
+    const cohereQuery = `Act as a Movie Recommendation system and suggest some movies for the query: ${userQuery}. Give me just names without anything. I have provided the format ahead how you have to respond, Only give me names of 10 movies, comma-separated. Example Result: Gadar, Sholay, Don, Golmaal, Koi Mil Gaya, KGF, Bahubali, Ramayan, Baghii, Stree`;
 
-    // ["Andaz Apna Apna", "Hera Pheri", "Chupke Chupke", "Jaane Bhi Do Yaaro", "Padosan"]
+    try {
+      const cohereResponse = await axios.post(
+        "https://api.cohere.ai/generate",
+        {
+          model: "command-r-plus",
+          prompt: cohereQuery,
+          max_tokens: 50,
+          temperature: 0.9,
+        },
+        {
+          headers: {
+            'Authorization': `Bearer ${API_KEY}`,
+            'Content-Type': 'application/json',
+          },
+        }
+      );
 
-    // For each movie I will search TMDB API
+      if (cohereResponse.data && cohereResponse.data.text) {
+        const gptMovies = cohereResponse.data.text
+          .split(",")
+          .map(movie => movie.trim());
 
-    const promiseArray = gptMovies.map((movie) => searchMovieTMDB(movie));
-    // [Promise, Promise, Promise, Promise, Promise]
+        const promiseArray = gptMovies.map((movie) => searchMovieTMDB(movie));
+        const tmdbResults = await Promise.all(promiseArray);
 
-    const tmdbResults = await Promise.all(promiseArray);
+        console.log("TMDB Results:", tmdbResults);
 
-    console.log(tmdbResults);
-
-    dispatch(
-        addGPTMovieResult({ movieNames: gptMovies, movieResults: tmdbResults })
-    );
+        dispatch(
+          addGPTMovieResult({ movieNames: gptMovies, movieResults: tmdbResults })
+        );
+      } else {
+        console.error("Unexpected response structure:", cohereResponse.data);
+      }
+    } catch (error) {
+      console.error("Error fetching movie data from Cohere:", error.response ? error.response.data : error);
+    } finally {
+      // Set loading to false
+      setLoading(false);
+    }
   };
 
   return (
     <div className="pt-[35%] md:pt-[10%] flex justify-center">
-      <form
-        className="w-full md:w-1/2 bg-black grid grid-cols-12"
-        onSubmit={(e) => e.preventDefault()}
-      >
-        <input
-          ref={searchText}
-          type="text"
-          className=" p-4 m-4 col-span-9"
-          placeholder={lang[langKey].gptSearchPlaceholder}
-        />
-        <button
-          className="col-span-3 m-4 py-2 px-4 bg-red-700 text-white rounded-lg"
-          onClick={handleGptSearchClick}
-        >
-          {lang[langKey].search}
-        </button>
-      </form>
+      <div className="w-full md:w-2/3 lg:w-1/2 bg-gradient-to-br from-gray-800/70 to-gray-900 border-2 border-yellow-400 rounded-lg shadow-2xl p-8 space-y-6 transition duration-300 hover:shadow-yellow-500/30">
+        <h1 className="text-white text-l sm:text-2xl md:text-3xl font-bold mb-4 text-center">
+          {lang[langKey].greeting}! 👋 {userName} ✨
+        </h1>
+        <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
+          <input
+            ref={searchText}
+            type="text"
+            className="w-full p-4 rounded-lg border-2 border-gray-600 bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:border-red-600 focus:ring-2 focus:ring-red-700 transition duration-300 shadow-md hover:shadow-lg"
+            placeholder={lang[langKey].gptSearchPlaceholder}
+          />
+          <button
+            className="w-full px-4 md:text-lg text-sm md:px-1 py-3 bg-gradient-to-r from-red-500 to-yellow-500 text-white rounded-lg font-semibold text-lg shadow-md hover:shadow-lg hover:from-red-600 hover:to-yellow-600 transition duration-300 transform hover:scale-105 active:scale-95 flex justify-center items-center"
+            onClick={handleGptSearchClick}
+          >
+            <i className="fas fa-robot mr-2"></i>
+            {loading ? lang[langKey].onSearching : lang[langKey].search}
+          </button>
+        </form>
+      </div>
     </div>
   );
 };
+
 export default GptSearchBar;
