@@ -158,16 +158,16 @@ const Header = () => {
             </button>
           )}
 
-          {location.pathname.startsWith("/browse/watch/") && (
+          {(location.pathname.startsWith("/browse/watch/") || location.pathname ==="/") && (
             <button onClick={() => navigate("/browse")} className="bg-gray-900 relative px-3 py-1 font-bold text-white rounded-lg transition-all duration-300 hover:shadow-xl hover:scale-105 flex items-center space-x-2">
               <FaHome className="w-5 h-5 text-white " />
               <span className="hidden text-white md:inline text-sm font-semibold drop-shadow-md">
                 Home
               </span>
             </button>
+            
           )}
-
-          {/* Avatar with click event */}
+          {location.pathname.startsWith("/browse/watch/") && (
           <div ref={avatarRef} className="relative cursor-pointer" onClick={toggleLogout}>
             <img
               src={user?.photoURL && user.photoURL.startsWith("http") ? user.photoURL : USER_AVATAR}
@@ -185,6 +185,27 @@ const Header = () => {
               </div>
             )}
           </div>
+          )}
+
+          {location.pathname.startsWith("/browse/watch/") || (
+          <div ref={avatarRef} className="relative cursor-pointer" onClick={toggleLogout}>
+            <img
+              src={user?.photoURL && user.photoURL.startsWith("http") ? user.photoURL : USER_AVATAR}
+              alt="User Icon"
+              className="w-8 h-8 rounded-full object-cover border border-gray-400 transition-transform duration-300 hover:scale-110"
+            />
+            {showLogout && (
+              <div className="absolute right-0 mt-2 bg-gray-800 text-white p-2 rounded-md shadow-lg z-10">
+                <button
+                  onClick={handleSignOut}
+                  className="mt-1 px-2 py-1 bg-red-600 text-white font-bold rounded-md transition-all duration-300 hover:bg-red-700"
+                >
+                  <span className="inline-block w-16">Log Out</span>
+                </button>
+              </div>
+            )}
+          </div>
+          )}
         </div>
       )}
 

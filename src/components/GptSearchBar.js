@@ -98,7 +98,7 @@ const GptSearchBar = () => {
                 placeholder={lang[langKey].gptSearchPlaceholder}
               />
               <button
-                className="w-full px-4 md:text-lg text-sm md:px-1 py-3 bg-gradient-to-r from-red-500 to-yellow-500 text-white rounded-lg font-semibold text-lg shadow-md hover:shadow-lg hover:from-red-600 hover:to-yellow-600 transition duration-300 transform hover:scale-105 active:scale-95 flex justify-center items-center"
+                className="w-full px-4 md:text-lg text-sm md:px-1 py-3 bg-gradient-to-r from-red-500 to-yellow-500 text-white rounded-lg font-semibold shadow-md hover:shadow-lg hover:from-red-600 hover:to-yellow-600 transition duration-300 transform hover:scale-105 active:scale-95 flex justify-center items-center"
                 onClick={handleGptSearchClick}
               >
                 <i className="fas fa-robot mr-2"></i>
