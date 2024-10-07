@@ -2,6 +2,28 @@
   "name": "mood-show",
   "version": "0.1.0",
   "private": true,
+  "proxy": {
+    "/gravatar": {
+      "target": "https://www.gravatar.com",
+      "changeOrigin": true,
+      "pathRewrite": { "^/gravatar": "" }
+    },
+    "/firebase": {
+      "target": "https://mood-show.firebaseapp.com",
+      "changeOrigin": true,
+      "pathRewrite": { "^/firebase": "" }
+    },
+    "/cohere": {
+      "target": "https://api.cohere.ai/generate",
+      "changeOrigin": true,
+      "pathRewrite": { "^/cohere": "" }
+    },
+    "/tmdb": {
+      "target": "https://api.themoviedb.org/3/search/",
+      "changeOrigin": true,
+      "pathRewrite": { "^/tmdb": "" }
+    }
+  },
   "dependencies": {
     "@emailjs/browser": "^4.4.1",
     "@fortawesome/fontawesome-free": "^6.6.0",

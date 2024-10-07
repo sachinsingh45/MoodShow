@@ -12,6 +12,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import Footer from './Footer';
 import md5 from 'md5';
 import { USER_AVATAR } from '../utils/constants';
+import ScrollToTop from './ScrollToTop';
 
 const Login = () => {
   const [isSignUp, setIsSignUp] = useState(false);
@@ -113,8 +114,9 @@ const Login = () => {
   return (
     <div>
       <ToastContainer position="top-right" autoClose={3000} />
-      <div className="relative h-screen w-full bg-cover bg-center bg-fixed" style={{ backgroundImage: "url('bg.jpg')" }}>
+      <div className="relative h-screen w-full bg-cover bg-center" style={{ backgroundImage: "url('bg.jpg')" }}>
         <Header />
+        <ScrollToTop/>
         <div className="absolute inset-0 flex items-center justify-center">
           <div className="bg-black bg-opacity-50 p-6 mt-10 rounded-lg max-w-md w-full text-white backdrop-blur">
             <h2 className="text-2xl font-bold mb-4">{isSignUp ? 'Sign Up' : 'Sign In'}</h2>

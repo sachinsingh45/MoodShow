@@ -36,7 +36,7 @@ const Landing = () => {
     <div>
       <ScrollToTop />
       <Header />
-      <div className="relative h-screen flex flex-col items-center justify-center w-full bg-cover bg-center bg-fixed text-white" style={{ backgroundImage: "url('bg.jpg')" }}>
+      <div className="relative h-screen flex flex-col items-center justify-center w-full bg-cover bg-center  text-white" style={{ backgroundImage: "url('bg.jpg')" }}>
         <div className="absolute inset-0 bg-black opacity-75 -z-1" />
         <div className="text-center space-y-8 z-10">
           <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold">Welcome to Mood Show</h1>
@@ -47,7 +47,7 @@ const Landing = () => {
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
           >
-            Get Started
+            Get Started →
           </motion.button>
         </div>
       </div>
@@ -74,13 +74,13 @@ const Landing = () => {
       </div>
 
       {/* Key Features Section */}
-      <div className="py-10 text-center bg-gray-800 text-white">
+      {/* <div className="py-10 text-center bg-gray-800 text-white">
         <h2 className="text-3xl font-bold mb-5">Key Features:</h2>
         <ul className="flex flex-col items-center space-y-4 md:flex-row md:space-y-0 md:space-x-10">
           <li className="bg-yellow-500 rounded-lg p-4 text-lg md:w-1/4">Personalized movie recommendations</li>
           <li className="bg-yellow-500 rounded-lg p-4 text-lg md:w-1/4">Search and filter movies by mood in your language</li>
         </ul>
-      </div>
+      </div> */}
 
       {/* Testimonials Section */}
       <div className="bg-gradient-to-b from-gray-800 to-gray-900 text-white py-10">

@@ -85,7 +85,7 @@ const GptSearchBar = () => {
   return (
     <div className="pt-[35%] md:pt-[10%] flex justify-center">
       <div className="w-full md:w-2/3 lg:w-1/2 bg-gradient-to-br from-gray-800/70 to-gray-900 border-2 border-yellow-400 rounded-lg shadow-2xl p-8 space-y-6 transition duration-300 hover:shadow-yellow-500/30">
-        {userName ? ( // Check if userName exists
+        {userName ? ( 
           <>
             <h1 className="text-white text-l sm:text-2xl md:text-3xl font-bold mb-4 text-center">
               {lang[langKey].greeting}! 👋 {userName} ✨
