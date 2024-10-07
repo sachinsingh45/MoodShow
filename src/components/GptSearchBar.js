@@ -1,14 +1,15 @@
-import React, { useRef, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import axios from "axios";
-import lang from "../utils/languageConstants";
-import { API_OPTIONS } from "../utils/constants";
-import { addGPTMovieResult } from "../utils/gptSlice";
+import React, { useRef, useState } from "react"; // Fix useRef and useState errors
+import { useDispatch, useSelector } from "react-redux"; // Fix useDispatch and useSelector errors
+import axios from "axios"; // Fix axios error
+import lang from "../utils/languageConstants"; // Fix lang error
+import { API_OPTIONS } from "../utils/constants"; // Fix API_OPTIONS error
+import { addGPTMovieResult } from "../utils/gptSlice"; // Fix addGPTMovieResult error
 
 const GptSearchBar = () => {
   const dispatch = useDispatch();
   const langKey = useSelector((store) => store.config.lang);
-  const userName = useSelector((store) => store.user.displayName);
+  const user = useSelector((store) => store.user);  // Fetch the entire user object
+  const userName = user ? user.displayName : null;  // Safely access displayName if user exists
   const searchText = useRef(null);
   const API_KEY = process.env.REACT_APP_API_KEY;
   const [loading, setLoading] = useState(false);
@@ -34,9 +35,6 @@ const GptSearchBar = () => {
       return;
     }
 
-    console.log("User Query:", userQuery);
-
-    // Set loading to true
     setLoading(true);
 
     const cohereQuery = `Act as a Movie Recommendation system and suggest some movies for the query: ${userQuery}. Give me just names without anything. I have provided the format ahead how you have to respond, Only give me names of 10 movies, comma-separated. Example Result: Gadar, Sholay, Don, Golmaal, Koi Mil Gaya, KGF, Bahubali, Ramayan, Baghii, Stree`;
@@ -66,8 +64,6 @@ const GptSearchBar = () => {
         const promiseArray = gptMovies.map((movie) => searchMovieTMDB(movie));
         const tmdbResults = await Promise.all(promiseArray);
 
-        console.log("TMDB Results:", tmdbResults);
-
         dispatch(
           addGPTMovieResult({ movieNames: gptMovies, movieResults: tmdbResults })
         );
@@ -77,13 +73,12 @@ const GptSearchBar = () => {
     } catch (error) {
       console.error("Error fetching movie data from Cohere:", error.response ? error.response.data : error);
     } finally {
-      // Set loading to false
       setLoading(false);
     }
   };
 
   return (
-    <div className="pt-[35%] md:pt-[10%] flex justify-center">
+    <div className="pt-[35%] md:pt-[10%] sm:pb-auto pb-80 flex justify-center">
       <div className="w-full md:w-2/3 lg:w-1/2 bg-gradient-to-br from-gray-800/70 to-gray-900 border-2 border-yellow-400 rounded-lg shadow-2xl p-8 space-y-6 transition duration-300 hover:shadow-yellow-500/30">
         {userName ? ( 
           <>

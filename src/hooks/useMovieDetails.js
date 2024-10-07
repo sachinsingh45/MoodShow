@@ -10,7 +10,6 @@ const useMovieDetails = (movieID) => {
         try {
             const response = await fetch(`https://api.themoviedb.org/3/movie/${movieID}?language=en-US`, API_OPTIONS);
             const json = await response.json();
-            console.log('Movie Details Response:', json); // Debugging line
             setMovieDetails(json);
         } catch (error) {
             console.error('Error fetching movie details:', error);

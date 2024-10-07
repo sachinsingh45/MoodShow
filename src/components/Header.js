@@ -210,7 +210,7 @@ const Header = () => {
       )}
 
       {/* Media Queries */}
-      <style jsx>{`
+      <style jsx="true">{`
         @media (max-width: 768px) {
           .space-x-4 {
             space-x-2;
