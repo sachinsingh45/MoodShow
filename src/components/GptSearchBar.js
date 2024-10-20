@@ -1,15 +1,15 @@
-import React, { useRef, useState } from "react"; // Fix useRef and useState errors
-import { useDispatch, useSelector } from "react-redux"; // Fix useDispatch and useSelector errors
-import axios from "axios"; // Fix axios error
-import lang from "../utils/languageConstants"; // Fix lang error
-import { API_OPTIONS } from "../utils/constants"; // Fix API_OPTIONS error
-import { addGPTMovieResult } from "../utils/gptSlice"; // Fix addGPTMovieResult error
+import React, { useRef, useState } from "react"; 
+import { useDispatch, useSelector } from "react-redux"; 
+import axios from "axios"; 
+import lang from "../utils/languageConstants"; 
+import { API_OPTIONS } from "../utils/constants"; 
+import { addGPTMovieResult } from "../utils/gptSlice";
 
 const GptSearchBar = () => {
   const dispatch = useDispatch();
   const langKey = useSelector((store) => store.config.lang);
-  const user = useSelector((store) => store.user);  // Fetch the entire user object
-  const userName = user ? user.displayName : null;  // Safely access displayName if user exists
+  const user = useSelector((store) => store.user);
+  const userName = user ? user.displayName : null;
   const searchText = useRef(null);
   const API_KEY = process.env.REACT_APP_API_KEY;
   const [loading, setLoading] = useState(false);
@@ -78,14 +78,14 @@ const GptSearchBar = () => {
   };
 
   return (
-    <div className="pt-[35%] md:pt-[10%] sm:pb-0 pb-80 flex justify-center">
-      <div className="w-full md:w-2/3 lg:w-1/2 bg-gradient-to-br from-gray-800/70 to-gray-900 border-2 border-yellow-400 rounded-lg shadow-2xl p-8 space-y-6 transition duration-300 hover:shadow-yellow-500/30">
-        {userName ? ( 
+    <div className="pt-40 sm:pt-36 md:pt-24 pb-72 sm:pb-56 md:pb-20 flex justify-center">
+      <div className="w-full md:w-2/3 lg:w-1/2 bg-gradient-to-br from-gray-800/70 to-gray-900 border-2 border-yellow-400 rounded-lg shadow-2xl p-10 sm:p-14 md:p-8 space-y-8 transition duration-300 hover:shadow-yellow-500/30">
+        {userName ? (
           <>
-            <h1 className="text-white text-l sm:text-2xl md:text-3xl font-bold mb-4 text-center">
+            <h1 className="text-white text-xl sm:text-2xl md:text-3xl font-bold mb-6 text-center">
               {lang[langKey].greeting}! 👋 {userName} ✨
             </h1>
-            <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
+            <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
               <input
                 ref={searchText}
                 type="text"
@@ -93,7 +93,7 @@ const GptSearchBar = () => {
                 placeholder={lang[langKey].gptSearchPlaceholder}
               />
               <button
-                className="w-full px-4 md:text-lg text-sm md:px-1 py-3 bg-gradient-to-r from-red-500 to-yellow-500 text-white rounded-lg font-semibold shadow-md hover:shadow-lg hover:from-red-600 hover:to-yellow-600 transition duration-300 transform hover:scale-105 active:scale-95 flex justify-center items-center"
+                className="w-full px-4 md:text-lg text-sm py-3 bg-gradient-to-r from-red-500 to-yellow-500 text-white rounded-lg font-semibold shadow-md hover:shadow-lg hover:from-red-600 hover:to-yellow-600 transition duration-300 transform hover:scale-105 active:scale-95 flex justify-center items-center"
                 onClick={handleGptSearchClick}
               >
                 <i className="fas fa-robot mr-2"></i>
@@ -102,7 +102,7 @@ const GptSearchBar = () => {
             </form>
           </>
         ) : (
-          <h1 className="text-white text-l sm:text-2xl md:text-3xl font-bold mb-4 text-center">
+          <h1 className="text-white text-xl sm:text-2xl md:text-3xl font-bold mb-6 text-center">
             Please log in to use the search functionality.
           </h1>
         )}

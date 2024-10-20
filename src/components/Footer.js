@@ -9,7 +9,7 @@ const Footer = () => {
   const userName = useSelector((store) => store.user?.displayName || "Guest");
 
   return (
-    <footer className="w-full bg-gradient-to-t from-black to-gray-900 text-white py-8 px-10">
+    <footer className="w-full bg-gradient-to-t from-black to-gray-900 text-white py-8 px-10 py-32">
       <div className="w-full mx-auto flex flex-col items-center space-y-4 md:space-y-0 md:flex-row md:justify-between">
         <div className="flex items-center space-x-4">
           <Link to="/"> 
